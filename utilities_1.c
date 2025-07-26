@@ -86,7 +86,7 @@ static int	atoi_err(const char *nptr, struct s_node *stack_a)
 	return ((int)result);
 }
 
-void	fill_stack_a(int ac, char *av[], struct s_node *stack_a)
+int	fill_stack_a(int ac, char *av[], struct s_node *stack_a)
 {
 	struct s_node	*curr;
 	int				i;
@@ -102,10 +102,12 @@ void	fill_stack_a(int ac, char *av[], struct s_node *stack_a)
 		if (i + 1 != ac)
 		{
 			curr->next = malloc(sizeof(struct s_node));
+			if (!curr->next)
+				return (-1);
 			curr->next->prev = curr;
 			curr = curr->next;
 		}
 		i++;
 	}
-	return ;
+	return (0);
 }

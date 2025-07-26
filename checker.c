@@ -17,7 +17,7 @@ int	main(int ac, char *av[])
 {
 	struct s_node	*stack_a;
 	struct s_node	*stack_b;
-	size_t			rule_count;
+	size_t			op_count;
 	struct s_node	*curr_a;
 	struct s_node	*curr_b;
 	char			rule[5];
@@ -27,7 +27,7 @@ int	main(int ac, char *av[])
 	stack_a = malloc(sizeof(struct s_node));
 	stack_b = NULL;
 	ac--;
-	rule_count = 0;
+	op_count = 0;
 	fill_stack_a(ac, av + 1, stack_a);
 	if (stack_a->next == NULL)
 	{	
@@ -36,7 +36,7 @@ int	main(int ac, char *av[])
 	}
 	while (ft_strncmp(rule, "exit", 5) != 0)
 	{
-		ft_printf("\nRule count: %d\n\n\t——\t\t\t——\n", rule_count);
+		ft_printf("\nInput size: %d\nOperation count: %d\n\n\t——\t\t\t——\n", ac, op_count);
 		curr_a = stack_a;
 		curr_b = stack_b;
 		while (curr_a != NULL || curr_b != NULL)
@@ -97,7 +97,7 @@ int	main(int ac, char *av[])
 			ft_printf("\nINVALID RULE\n");
 			continue ;
 		}
-		rule_count++;
+		op_count++;
 	}
 	free_stack(stack_a);
 	free_stack(stack_b);

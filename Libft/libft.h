@@ -18,6 +18,8 @@
 # include <stdint.h>
 # include <limits.h>
 # include <stdarg.h>
+# include "ft_printf/ft_printf.h"
+# include "get_next_line/get_next_line.h"
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
@@ -52,6 +54,5 @@ void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
-int	    ft_printf(const char *format, ...);
 
 #endif
