@@ -53,11 +53,11 @@ typedef struct s_op_count_resources
 }	t_op_count_resources;
 
 /* ---- fill_stack_a.c ---- */
+void	free_stack(t_stack_node *curr);
 void	fill_stack_a(int ac, char *av[], t_stack_node *stack_a);
 
 /* ---- utilities.c ---- */
 int		check_if_sorted(t_stack_node *stack_a);
-void	free_stack(t_stack_node *curr);
 void	rotate_to_top(char which_stack, t_stack_node **stack,
 			int arg_nbr, int size_of_stack);
 void	rotate_stacks(t_stack_node **stack_a, t_stack_node **stack_b,

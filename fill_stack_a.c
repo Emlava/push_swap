@@ -46,7 +46,7 @@ static size_t	if_space_or_sign(const char *nptr, t_stack_node *stack_a)
 	size_t	i;
 
 	i = 0;
-	while ((nptr[i] >= 9 && nptr[i] <= 13) || nptr[i] == 32)
+	while (nptr[i] == ' ')
 		i++;
 	if (nptr[i] == '+' || nptr[i] == '-')
 		i++;
