@@ -3,26 +3,30 @@ NAME_BONUS = checker
 CC = cc
 FLAGS = -Wall -Wextra -Werror
 LIBRARY = libft/libft.a
-SOURCES = actions.c find_extremes.c main.c manage_chunks.c rules.c fill_stack_a.c manage_pa.c utilities.c
-BONUS_SOURCES = checker_bonus.c rules_bonus.c fill_stack_a.c actions.c utilities_bonus.c 
+OBJECTS = actions.o find_extremes.o main.o manage_chunks.o rules.o fill_stack_a.o manage_pa.o utilities.o
+BONUS_OBJECTS = checker_bonus.o rules_bonus.o fill_stack_a.o actions.o utilities_bonus.o
 
 .PHONY: all clean fclean re
 
 all: $(NAME)
 
+$(NAME): $(LIBRARY) $(OBJECTS)
+	$(CC) $(FLAGS) $(OBJECTS) $(LIBRARY) -o $(NAME)
+
 $(LIBRARY):
 	$(MAKE) -C ./libft
 
-$(NAME): $(LIBRARY)
-	$(CC) $(FLAGS) $(SOURCES) $(LIBRARY) -o $(NAME)
+%.o: %.c
+	$(CC) $(FLAGS) -c $< -o $@
 
-bonus: $(LIBRARY)
-	$(CC) $(FLAGS) $(BONUS_SOURCES) $(LIBRARY) -o $(NAME_BONUS)
+bonus: $(LIBRARY) $(BONUS_OBJECTS)
+	$(CC) $(FLAGS) $(BONUS_OBJECTS) $(LIBRARY) -o $(NAME_BONUS)
 
 clean:
 	$(MAKE) -C ./libft clean
+	rm -f $(OBJECTS) $(BONUS_OBJECTS)
 
-fclean:
+fclean: clean
 	$(MAKE) -C ./libft fclean
 	rm -f $(NAME) $(NAME_BONUS)
 
