@@ -94,12 +94,15 @@ int	main(int ac, char *av[])
 	stack_b = NULL;
 	ac--;
 	fill_stack_a(ac, NULL, av + 1, stack_a);
-	instructions = malloc(sizeof(t_instruction_node));
-	if (!instructions)
-		return (1);
-	create_instruction_list(instructions);
-	run_instructions(&stack_a, &stack_b, instructions);
-	free_instruction_list(instructions);
+	if (stack_a->next != NULL && !check_if_sorted_bonus(stack_a))
+	{
+		instructions = malloc(sizeof(t_instruction_node));
+		if (!instructions)
+			return (1);
+		create_instruction_list(instructions);
+		run_instructions(&stack_a, &stack_b, instructions);
+		free_instruction_list(instructions);
+	}
 	give_output(stack_a, stack_b);
 	free_stack(stack_a);
 	return (0);
