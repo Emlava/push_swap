@@ -12,35 +12,6 @@
 
 #include "push_swap.h"
 
-void	free_stack(t_stack_node *curr)
-{
-	t_stack_node	*tmp;
-
-	while (curr != NULL)
-	{
-		tmp = curr;
-		curr = curr->next;
-		free(tmp);
-	}
-	return ;
-}
-
-static void	check_for_dups(t_stack_node *curr, int nb, t_stack_node *stack_a)
-{
-	curr = curr->prev;
-	while (curr != NULL)
-	{
-		if (curr->nb == nb)
-		{
-			free_stack(stack_a);
-			write(2, "Error\n", 6);
-			exit(EXIT_FAILURE);
-		}
-		curr = curr->prev;
-	}
-	return ;
-}
-
 static size_t	if_space_or_sign(const char *nptr, t_stack_node *stack_a)
 {
 	size_t	i;
@@ -86,7 +57,36 @@ static int	atoi_err(const char *nptr, t_stack_node *stack_a)
 	return ((int)result);
 }
 
-void	fill_stack_a(int ac, char *av[], t_stack_node *stack_a)
+static void	manage_string_with_multiple_args(int *real_ac, char *arg_str,
+	t_stack_node *stack_a, t_stack_node **curr)
+{
+	char			sub_str[11];
+
+	skip_spaces(&arg_str);
+	while (*arg_str)
+	{
+		(*curr)->next = NULL;
+		copy_sub_str(&arg_str, sub_str, stack_a);
+		(*curr)->nb = atoi_err(sub_str, stack_a);
+		skip_spaces(&arg_str);
+		if (*arg_str == '-' || *arg_str == '+'
+			|| (*arg_str >= '0' && *arg_str <= '9'))
+		{
+			(*curr)->next = malloc(sizeof(t_stack_node));
+			if (!(*curr)->next)
+				exit(EXIT_FAILURE);
+			(*curr)->next->prev = *curr;
+			*curr = (*curr)->next;
+		}
+		if (real_ac)
+			(*real_ac)++;
+	}
+	if (real_ac)
+		(*real_ac)--;
+	return ;
+}
+
+void	fill_stack_a(int ac, int *real_ac, char *av[], t_stack_node *stack_a)
 {
 	t_stack_node	*curr;
 	int				i;
@@ -96,10 +96,15 @@ void	fill_stack_a(int ac, char *av[], t_stack_node *stack_a)
 	i = 0;
 	while (i < ac)
 	{
-		curr->next = NULL;
-		curr->nb = atoi_err(av[i], stack_a);
+		if (multiple_args_in_str(av[i]))
+			manage_string_with_multiple_args(real_ac, av[i], stack_a, &curr);
+		else
+		{
+			curr->next = NULL;
+			curr->nb = atoi_err(av[i], stack_a);
+		}
 		check_for_dups(curr, curr->nb, stack_a);
-		if (i + 1 != ac)
+		if (i++ + 1 != ac)
 		{
 			curr->next = malloc(sizeof(t_stack_node));
 			if (!curr->next)
@@ -107,7 +112,5 @@ void	fill_stack_a(int ac, char *av[], t_stack_node *stack_a)
 			curr->next->prev = curr;
 			curr = curr->next;
 		}
-		i++;
 	}
-	return ;
 }

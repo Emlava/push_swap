@@ -62,19 +62,20 @@ static void	sort_6_500(t_stack_node **stack_a, t_stack_node **stack_b,
 {
 	t_stack_node	*lowest_a;
 
-	sizes.chunk_size = sizes.ac / 3;
-	sizes.size_of_a = sizes.ac;
+	sizes.chunk_size = sizes.real_ac / 3;
+	sizes.size_of_a = sizes.real_ac;
 	while (sizes.size_of_a > 3)
 	{
 		pb_by_chunks(stack_a, stack_b, sizes);
 		sizes.size_of_a -= sizes.chunk_size;
 	}
 	sort_3(stack_a);
-	sizes.size_of_b = sizes.ac - 3;
+	sizes.size_of_b = sizes.real_ac - 3;
 	sizes.size_of_a = 3;
 	manage_pa(stack_a, stack_b, sizes);
 	lowest_a = *stack_a;
-	rotate_to_top('A', stack_a, find_lowest(&lowest_a, sizes.ac), sizes.ac);
+	rotate_to_top('A', stack_a, find_lowest(&lowest_a,
+			sizes.real_ac), sizes.real_ac);
 	return ;
 }
 
@@ -83,13 +84,13 @@ static void	sort(t_stack_node **stack_a, t_sizes sizes)
 	t_stack_node	*stack_b;
 
 	stack_b = NULL;
-	if (sizes.ac == 2)
+	if (sizes.real_ac == 2)
 		rules(stack_a, NULL, "sa");
-	else if (sizes.ac == 3)
+	else if (sizes.real_ac == 3)
 		sort_3(stack_a);
-	else if (sizes.ac >= 4 && sizes.ac <= 5)
-		sort_4_5(stack_a, &stack_b, sizes.ac);
-	else if (sizes.ac >= 6)
+	else if (sizes.real_ac >= 4 && sizes.real_ac <= 5)
+		sort_4_5(stack_a, &stack_b, sizes.real_ac);
+	else if (sizes.real_ac >= 6)
 		sort_6_500(stack_a, &stack_b, sizes);
 	return ;
 }
@@ -104,11 +105,11 @@ int	main(int ac, char *av[])
 	stack_a = malloc(sizeof(t_stack_node));
 	if (!stack_a)
 		return (1);
-	sizes.ac = ac - 1;
-	fill_stack_a(sizes.ac, av + 1, stack_a);
+	ac--;
+	sizes.real_ac = ac;
+	fill_stack_a(ac, &sizes.real_ac, av + 1, stack_a);
 	if (check_if_sorted(stack_a))
 	{
-		ft_printf("Already sorted!\n");
 		free_stack(stack_a);
 		return (0);
 	}

@@ -33,7 +33,7 @@ typedef struct s_chunk
 
 typedef struct s_sizes
 {
-	int	ac;
+	int	real_ac;
 	int	size_of_a;
 	int	size_of_b;
 	int	chunk_size;
@@ -53,10 +53,16 @@ typedef struct s_op_count_resources
 }	t_op_count_resources;
 
 /* ---- fill_stack_a.c ---- */
-void	free_stack(t_stack_node *curr);
-void	fill_stack_a(int ac, char *av[], t_stack_node *stack_a);
+void	fill_stack_a(int ac, int *real_ac, char *av[], t_stack_node *stack_a);
 
-/* ---- utilities.c ---- */
+/* ---- fill_stack_a_utilities --- */
+void	skip_spaces(char **arg_str);
+void	copy_sub_str(char **arg_str, char *sub_str, t_stack_node *stack_a);
+int		multiple_args_in_str(char *str);
+void	check_for_dups(t_stack_node *curr, int nb, t_stack_node *stack_a);
+void	free_stack(t_stack_node *curr);
+
+/* ---- general_utilities.c ---- */
 int		check_if_sorted(t_stack_node *stack_a);
 void	rotate_to_top(char which_stack, t_stack_node **stack,
 			int arg_nbr, int size_of_stack);

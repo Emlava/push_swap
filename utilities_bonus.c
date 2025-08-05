@@ -24,6 +24,24 @@ int	check_if_sorted_bonus(t_stack_node *stack_a)
 	return (0);
 }
 
+void	create_next_instruction_node(char *curr_instruction,
+	t_instruction_node **curr_node, t_instruction_node *instructions)
+{
+	if (curr_instruction)
+	{
+		(*curr_node)->next = malloc(sizeof(t_instruction_node));
+		if (!(*curr_node)->next)
+		{
+			free_instruction_list(instructions);
+			exit(EXIT_FAILURE);
+		}
+		*curr_node = (*curr_node)->next;
+	}
+	else
+		(*curr_node)->next = NULL;
+	return ;
+}
+
 void	free_instruction_list(t_instruction_node *curr)
 {
 	t_instruction_node	*tmp;
@@ -32,6 +50,7 @@ void	free_instruction_list(t_instruction_node *curr)
 	{
 		tmp = curr;
 		curr = curr->next;
+		free(tmp->instruction);
 		free(tmp);
 	}
 	return ;
