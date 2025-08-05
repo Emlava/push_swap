@@ -94,7 +94,7 @@ int	main(int ac, char *av[])
 	stack_b = NULL;
 	ac--;
 	fill_stack_a(ac, NULL, av + 1, stack_a);
-	if (stack_a->next != NULL && !check_if_sorted_bonus(stack_a))
+	if (!check_if_sorted_bonus(stack_a))
 	{
 		instructions = malloc(sizeof(t_instruction_node));
 		if (!instructions)
