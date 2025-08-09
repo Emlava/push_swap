@@ -30,7 +30,7 @@ void	copy_sub_str(char **arg_str, char *sub_str, t_stack_node *stack_a)
 		i++;
 		(*arg_str)++;
 	}
-	while (**arg_str >= '0' && **arg_str <= '9')
+	while (i < 12 && **arg_str >= '0' && **arg_str <= '9')
 	{
 		sub_str[i] = **arg_str;
 		i++;

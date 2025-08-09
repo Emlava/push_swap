@@ -60,7 +60,7 @@ static int	atoi_err(const char *nptr, t_stack_node *stack_a)
 static void	manage_string_with_multiple_args(int *real_ac, char *arg_str,
 	t_stack_node *stack_a, t_stack_node **curr)
 {
-	char			sub_str[11];
+	char			sub_str[12];
 
 	skip_spaces(&arg_str);
 	while (*arg_str)
