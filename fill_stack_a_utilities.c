@@ -39,9 +39,8 @@ void	copy_sub_str(char **arg_str, char *sub_str, t_stack_node *stack_a)
 	sub_str[i] = '\0';
 	if (**arg_str && **arg_str != ' ')
 	{
-		free_stack(stack_a);
 		write(2, "Error\n", 6);
-		exit(EXIT_FAILURE);
+		free_stacks_exit(stack_a, NULL, 1);
 	}
 	return ;
 }
@@ -69,24 +68,32 @@ void	check_for_dups(t_stack_node *curr, int nb, t_stack_node *stack_a)
 	{
 		if (curr->nb == nb)
 		{
-			free_stack(stack_a);
 			write(2, "Error\n", 6);
-			exit(EXIT_FAILURE);
+			free_stacks_exit(stack_a, NULL, 1);
 		}
 		curr = curr->prev;
 	}
 	return ;
 }
 
-void	free_stack(t_stack_node *curr)
+void	free_stacks_exit(t_stack_node *curr_a, t_stack_node *curr_b,
+	int exit_status)
 {
 	t_stack_node	*tmp;
 
-	while (curr != NULL)
+	while (curr_a != NULL)
 	{
-		tmp = curr;
-		curr = curr->next;
+		tmp = curr_a;
+		curr_a = curr_a->next;
 		free(tmp);
 	}
+	while (curr_b != NULL)
+	{
+		tmp = curr_b;
+		curr_b = curr_b->next;
+		free(tmp);
+	}
+	if (exit_status == 1)
+		exit(EXIT_FAILURE);
 	return ;
 }

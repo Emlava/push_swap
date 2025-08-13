@@ -60,7 +60,8 @@ void	skip_spaces(char **arg_str);
 void	copy_sub_str(char **arg_str, char *sub_str, t_stack_node *stack_a);
 int		multiple_args_in_str(char *str);
 void	check_for_dups(t_stack_node *curr, int nb, t_stack_node *stack_a);
-void	free_stack(t_stack_node *curr);
+void	free_stacks_exit(t_stack_node *curr_a, t_stack_node *curr_b,
+			int exit_status);
 
 /* ---- general_utilities.c ---- */
 int		check_if_sorted(t_stack_node *stack_a);

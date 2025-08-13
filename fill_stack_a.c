@@ -23,9 +23,8 @@ static size_t	if_space_or_sign(const char *nptr, t_stack_node *stack_a)
 		i++;
 	if (nptr[i] < '0' || nptr[i] > '9')
 	{
-		free_stack(stack_a);
 		write(2, "Error\n", 6);
-		exit(EXIT_FAILURE);
+		free_stacks_exit(stack_a, NULL, 1);
 	}
 	return (i);
 }
@@ -50,9 +49,8 @@ static int	atoi_err(const char *nptr, t_stack_node *stack_a)
 		result = -result;
 	if (nptr[i] != '\0' || result < INT_MIN || result > INT_MAX)
 	{
-		free_stack(stack_a);
 		write(2, "Error\n", 6);
-		exit(EXIT_FAILURE);
+		free_stacks_exit(stack_a, NULL, 1);
 	}
 	return ((int)result);
 }
@@ -68,13 +66,14 @@ static void	manage_string_with_multiple_args(int *real_ac, char *arg_str,
 		(*curr)->next = NULL;
 		copy_sub_str(&arg_str, sub_str, stack_a);
 		(*curr)->nb = atoi_err(sub_str, stack_a);
+		check_for_dups(*curr, (*curr)->nb, stack_a);
 		skip_spaces(&arg_str);
 		if (*arg_str == '-' || *arg_str == '+'
 			|| (*arg_str >= '0' && *arg_str <= '9'))
 		{
 			(*curr)->next = malloc(sizeof(t_stack_node));
 			if (!(*curr)->next)
-				exit(EXIT_FAILURE);
+				free_stacks_exit(stack_a, NULL, 1);
 			(*curr)->next->prev = *curr;
 			*curr = (*curr)->next;
 		}
@@ -102,13 +101,13 @@ void	fill_stack_a(int ac, int *real_ac, char *av[], t_stack_node *stack_a)
 		{
 			curr->next = NULL;
 			curr->nb = atoi_err(av[i], stack_a);
+			check_for_dups(curr, curr->nb, stack_a);
 		}
-		check_for_dups(curr, curr->nb, stack_a);
 		if (i++ + 1 != ac)
 		{
 			curr->next = malloc(sizeof(t_stack_node));
 			if (!curr->next)
-				exit(EXIT_FAILURE);
+				free_stacks_exit(stack_a, NULL, 1);
 			curr->next->prev = curr;
 			curr = curr->next;
 		}

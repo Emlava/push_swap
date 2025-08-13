@@ -45,16 +45,21 @@ static void	sort_4_5(t_stack_node **stack_a, t_stack_node **stack_b, int ac)
 		lowest = *stack_a;
 		arg_nbr = find_lowest(&lowest, size_of_a);
 		rotate_to_top('A', stack_a, arg_nbr, size_of_a);
-		rules(stack_a, stack_b, "pb");
-		size_of_a--;
+		if (!check_if_sorted(*stack_a))
+		{
+			rules(stack_a, stack_b, "pb");
+			size_of_a--;
+		}
+		else
+			break ;
 	}
-	sort_3(stack_a);
+	if (!check_if_sorted(*stack_a))
+		sort_3(stack_a);
 	while (size_of_a < ac)
 	{
 		rules(stack_a, stack_b, "pa");
 		size_of_a++;
 	}
-	return ;
 }
 
 static void	sort_6_500(t_stack_node **stack_a, t_stack_node **stack_b,
@@ -110,10 +115,10 @@ int	main(int ac, char *av[])
 	fill_stack_a(ac, &sizes.real_ac, av + 1, stack_a);
 	if (check_if_sorted(stack_a))
 	{
-		free_stack(stack_a);
+		free_stacks_exit(stack_a, NULL, 0);
 		return (0);
 	}
 	sort(&stack_a, sizes);
-	free_stack(stack_a);
+	free_stacks_exit(stack_a, NULL, 0);
 	return (0);
 }

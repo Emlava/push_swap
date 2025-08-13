@@ -73,10 +73,7 @@ static void	give_output(t_stack_node *stack_a, t_stack_node *stack_b)
 	if (stack_b == NULL && check_if_sorted_bonus(stack_a) == 1)
 		ft_printf("OK\n");
 	else
-	{
-		free_stack(stack_b);
 		ft_printf("KO\n");
-	}
 	return ;
 }
 
@@ -98,12 +95,12 @@ int	main(int ac, char *av[])
 	{
 		instructions = malloc(sizeof(t_instruction_node));
 		if (!instructions)
-			return (1);
+			free_stacks_exit(stack_a, NULL, 1);
 		create_instruction_list(instructions);
 		run_instructions(&stack_a, &stack_b, instructions);
 		free_instruction_list(instructions);
 	}
 	give_output(stack_a, stack_b);
-	free_stack(stack_a);
+	free_stacks_exit(stack_a, stack_b, 0);
 	return (0);
 }
