@@ -25,7 +25,8 @@ int	check_if_sorted_bonus(t_stack_node *stack_a)
 }
 
 void	create_next_instruction_node(char *curr_instruction,
-	t_instruction_node **curr_node, t_instruction_node *instructions)
+	t_instruction_node **curr_node, t_instruction_node *instructions,
+	t_stack_node *stack_a)
 {
 	if (curr_instruction)
 	{
@@ -33,7 +34,7 @@ void	create_next_instruction_node(char *curr_instruction,
 		if (!(*curr_node)->next)
 		{
 			free_instruction_list(instructions);
-			exit(EXIT_FAILURE);
+			free_stacks_exit(stack_a, NULL, 1);
 		}
 		*curr_node = (*curr_node)->next;
 	}
