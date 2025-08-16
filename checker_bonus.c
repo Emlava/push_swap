@@ -33,7 +33,7 @@ static int	check_for_invalid_instructions(char *instruction)
 		return (1);
 }
 
-static void	create_instruction_list(t_instruction_node *instructions,
+static void	create_instruction_list(t_instruction_node **instructions,
 	t_stack_node *stack_a)
 {
 	t_instruction_node	*curr_node;
@@ -42,23 +42,23 @@ static void	create_instruction_list(t_instruction_node *instructions,
 	curr_instruction = get_next_line(0);
 	if (curr_instruction)
 	{
-		instructions = malloc(sizeof(t_instruction_node));
-		if (!instructions)
+		*instructions = malloc(sizeof(t_instruction_node));
+		if (!(*instructions))
 			free_stacks_exit(stack_a, NULL, 1);
-		curr_node = instructions;
+		curr_node = *instructions;
 		while (curr_instruction)
 		{
 			if (check_for_invalid_instructions(curr_instruction) == 1)
 			{
 				ft_printf("Error\n");
 				free(curr_instruction);
-				free_instruction_list(instructions);
+				free_instruction_list(*instructions);
 				free_stacks_exit(stack_a, NULL, 1);
 			}
 			curr_node->instruction = curr_instruction;
 			curr_instruction = get_next_line(0);
 			create_next_instruction_node(curr_instruction,
-				&curr_node, instructions, stack_a);
+				&curr_node, *instructions, stack_a);
 		}
 	}
 }
@@ -98,7 +98,7 @@ int	main(int ac, char *av[])
 	ac--;
 	fill_stack_a(ac, NULL, av + 1, stack_a);
 	instructions = NULL;
-	create_instruction_list(instructions, stack_a);
+	create_instruction_list(&instructions, stack_a);
 	run_instructions(&stack_a, &stack_b, instructions);
 	free_instruction_list(instructions);
 	give_output(stack_a, stack_b);
